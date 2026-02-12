@@ -1,3 +1,8 @@
+---
+name: calorie_tracker
+description: User wants to log food or meals they've eaten
+---
+
 # Calorie Tracker
 
 ## Use When

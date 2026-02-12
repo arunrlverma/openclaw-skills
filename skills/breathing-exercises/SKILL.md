@@ -1,3 +1,8 @@
+---
+name: breathing_exercises
+description: User feels stressed, anxious, or overwhelmed
+---
+
 # Breathing Exercises
 
 ## Use When

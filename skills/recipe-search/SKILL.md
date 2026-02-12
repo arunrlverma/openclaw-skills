@@ -1,3 +1,8 @@
+---
+name: recipe_search
+description: User asks for recipe ideas or specific recipes
+---
+
 # Recipe Search
 
 ## Use When

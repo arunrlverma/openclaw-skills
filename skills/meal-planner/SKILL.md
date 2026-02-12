@@ -1,3 +1,8 @@
+---
+name: meal_planner
+description: User asks for meal plans, recipes, or dietary guidance
+---
+
 # Meal Planner
 
 ## Use When

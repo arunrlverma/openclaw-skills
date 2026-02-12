@@ -1,3 +1,8 @@
+---
+name: progress_tracker
+description: User wants to log a completed workout
+---
+
 # Progress Tracker
 
 ## Use When

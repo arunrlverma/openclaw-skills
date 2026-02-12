@@ -1,3 +1,8 @@
+---
+name: workout_timer
+description: User wants interval timers for HIIT, Tabata, or circuit training
+---
+
 # Workout Timer
 
 ## Use When

@@ -1,3 +1,8 @@
+---
+name: mood_journal
+description: User wants to log how they're feeling
+---
+
 # Mood Journal
 
 ## Use When

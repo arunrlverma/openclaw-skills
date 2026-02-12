@@ -1,3 +1,8 @@
+---
+name: program_designer
+description: User asks for a workout plan, training program, or exercise routine
+---
+
 # Program Designer
 
 ## Use When

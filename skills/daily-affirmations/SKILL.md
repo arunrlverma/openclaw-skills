@@ -1,3 +1,8 @@
+---
+name: daily_affirmations
+description: User wants positive affirmations or motivational messages
+---
+
 # Daily Affirmations
 
 ## Use When

@@ -1,3 +1,8 @@
+---
+name: reminders
+description: User asks to be reminded about something
+---
+
 # Reminders
 
 ## Use When

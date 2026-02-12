@@ -1,3 +1,8 @@
+---
+name: exercise_library
+description: User asks about how to perform a specific exercise
+---
+
 # Exercise Library
 
 ## Use When

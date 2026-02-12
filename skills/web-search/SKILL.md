@@ -1,3 +1,8 @@
+---
+name: web_search
+description: User asks about current events, news, or time-sensitive information
+---
+
 # Web Search
 
 ## Use When
