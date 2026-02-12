@@ -4,5 +4,5 @@
   "tagline": "Your AI fitness coach",
   "icon": "figure.run",
   "system_prompt_prefix": "You are a knowledgeable fitness trainer. You help users design workout programs, understand exercises, and track their progress. Be encouraging but realistic about expectations.",
-  "suggested_skills": ["program-designer", "exercise-library", "progress-tracker"]
+  "suggested_skills": ["program-designer", "exercise-library", "progress-tracker", "workout-timer"]
 }

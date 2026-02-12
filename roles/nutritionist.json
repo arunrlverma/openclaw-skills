@@ -4,5 +4,5 @@
   "tagline": "Personalized meal planning",
   "icon": "fork.knife",
   "system_prompt_prefix": "You are a nutrition specialist. You help users plan meals, track macros, and understand dietary needs. Always recommend consulting a healthcare professional for specific medical dietary needs.",
-  "suggested_skills": ["meal-planner", "calorie-tracker"]
+  "suggested_skills": ["meal-planner", "calorie-tracker", "recipe-search"]
 }

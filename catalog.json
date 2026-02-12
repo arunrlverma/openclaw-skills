@@ -7,21 +7,21 @@
       "name": "Trainer",
       "tagline": "Your AI fitness coach",
       "icon": "figure.run",
-      "suggested_skills": ["program-designer", "exercise-library", "progress-tracker"]
+      "suggested_skills": ["program-designer", "exercise-library", "progress-tracker", "workout-timer"]
     },
     {
       "id": "nutritionist",
       "name": "Nutritionist",
       "tagline": "Personalized meal planning",
       "icon": "fork.knife",
-      "suggested_skills": ["meal-planner", "calorie-tracker"]
+      "suggested_skills": ["meal-planner", "calorie-tracker", "recipe-search"]
     },
     {
       "id": "therapist",
       "name": "Therapist",
       "tagline": "Mental wellness companion",
       "icon": "brain.head.profile",
-      "suggested_skills": ["mood-journal", "breathing-exercises"]
+      "suggested_skills": ["mood-journal", "breathing-exercises", "daily-affirmations"]
     },
     {
       "id": "assistant",
@@ -63,12 +63,72 @@
       "requires_network": false
     },
     {
+      "id": "workout-timer",
+      "name": "Workout Timer",
+      "description": "Interval timers for HIIT, Tabata, circuits, and rest period tracking",
+      "icon": "timer",
+      "category": "fitness",
+      "roles": ["trainer"],
+      "requires_env": [],
+      "requires_network": false
+    },
+    {
       "id": "meal-planner",
       "name": "Meal Planner",
       "description": "Generate weekly meal plans with macros, recipes, and shopping lists",
       "icon": "takeoutbag.and.cup.and.straw",
       "category": "nutrition",
       "roles": ["nutritionist", "trainer"],
+      "requires_env": [],
+      "requires_network": false
+    },
+    {
+      "id": "calorie-tracker",
+      "name": "Calorie Tracker",
+      "description": "Log food intake and track daily calories and macronutrients",
+      "icon": "flame",
+      "category": "nutrition",
+      "roles": ["nutritionist"],
+      "requires_env": [],
+      "requires_network": false
+    },
+    {
+      "id": "recipe-search",
+      "name": "Recipe Search",
+      "description": "Search the web for recipes by ingredients, dietary needs, or cuisine",
+      "icon": "magnifyingglass.circle",
+      "category": "nutrition",
+      "roles": ["nutritionist"],
+      "requires_env": ["BRAVE_API_KEY"],
+      "requires_network": true
+    },
+    {
+      "id": "mood-journal",
+      "name": "Mood Journal",
+      "description": "Track moods, identify patterns, and guided journaling prompts",
+      "icon": "heart.text.square",
+      "category": "wellness",
+      "roles": ["therapist"],
+      "requires_env": [],
+      "requires_network": false
+    },
+    {
+      "id": "breathing-exercises",
+      "name": "Breathing Exercises",
+      "description": "Guided breathing techniques for stress relief, focus, and sleep",
+      "icon": "wind",
+      "category": "wellness",
+      "roles": ["therapist"],
+      "requires_env": [],
+      "requires_network": false
+    },
+    {
+      "id": "daily-affirmations",
+      "name": "Daily Affirmations",
+      "description": "Positive affirmations, gratitude exercises, and morning mindset routines",
+      "icon": "sun.max",
+      "category": "wellness",
+      "roles": ["therapist"],
       "requires_env": [],
       "requires_network": false
     },
@@ -81,6 +141,16 @@
       "roles": ["assistant"],
       "requires_env": ["BRAVE_API_KEY"],
       "requires_network": true
+    },
+    {
+      "id": "reminders",
+      "name": "Reminders",
+      "description": "Set, manage, and receive reminders and scheduled check-ins",
+      "icon": "bell",
+      "category": "tools",
+      "roles": ["assistant"],
+      "requires_env": [],
+      "requires_network": false
     }
   ]
 }
