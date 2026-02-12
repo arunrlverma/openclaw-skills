@@ -20,6 +20,7 @@ NGINX
 rm -f /etc/nginx/sites-enabled/default
 ln -sf /etc/nginx/sites-available/agent-site /etc/nginx/sites-enabled/agent-site
 mkdir -p /root/workspace/www
+chmod 755 /root /root/workspace /root/workspace/www
 if [ ! -f /root/workspace/www/index.html ]; then
     echo '<html><body><h1>Coming soon</h1></body></html>' > /root/workspace/www/index.html
 fi
