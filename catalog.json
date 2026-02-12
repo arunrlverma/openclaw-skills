@@ -151,6 +151,24 @@
       "roles": ["assistant"],
       "requires_env": [],
       "requires_network": false
+    },
+    {
+      "id": "website-builder",
+      "name": "Website Builder",
+      "description": "Build and host websites on this server with Tailwind CSS for beautiful designs",
+      "icon": "globe",
+      "category": "tools",
+      "requires_env": [],
+      "requires_network": false
+    },
+    {
+      "id": "memory",
+      "name": "Memory",
+      "description": "Persistent memory — remembers facts, decisions, and preferences across conversations",
+      "icon": "brain.head.profile",
+      "category": "core",
+      "requires_env": [],
+      "requires_network": true
     }
   ]
 }
