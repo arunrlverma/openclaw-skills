@@ -1,0 +1,86 @@
+{
+  "version": 1,
+  "updated": "2026-02-12T00:00:00Z",
+  "roles": [
+    {
+      "id": "trainer",
+      "name": "Trainer",
+      "tagline": "Your AI fitness coach",
+      "icon": "figure.run",
+      "suggested_skills": ["program-designer", "exercise-library", "progress-tracker"]
+    },
+    {
+      "id": "nutritionist",
+      "name": "Nutritionist",
+      "tagline": "Personalized meal planning",
+      "icon": "fork.knife",
+      "suggested_skills": ["meal-planner", "calorie-tracker"]
+    },
+    {
+      "id": "therapist",
+      "name": "Therapist",
+      "tagline": "Mental wellness companion",
+      "icon": "brain.head.profile",
+      "suggested_skills": ["mood-journal", "breathing-exercises"]
+    },
+    {
+      "id": "assistant",
+      "name": "Assistant",
+      "tagline": "General-purpose helper",
+      "icon": "sparkles",
+      "suggested_skills": ["web-search", "reminders"]
+    }
+  ],
+  "skills": [
+    {
+      "id": "program-designer",
+      "name": "Program Designer",
+      "description": "Creates personalized workout programs based on goals, equipment, and schedule",
+      "icon": "figure.strengthtraining.traditional",
+      "category": "fitness",
+      "roles": ["trainer"],
+      "requires_env": [],
+      "requires_network": false
+    },
+    {
+      "id": "exercise-library",
+      "name": "Exercise Library",
+      "description": "Comprehensive exercise database with form guides and muscle group targeting",
+      "icon": "books.vertical",
+      "category": "fitness",
+      "roles": ["trainer"],
+      "requires_env": [],
+      "requires_network": false
+    },
+    {
+      "id": "progress-tracker",
+      "name": "Progress Tracker",
+      "description": "Track workouts, PRs, and body measurements over time",
+      "icon": "chart.line.uptrend.xyaxis",
+      "category": "fitness",
+      "roles": ["trainer"],
+      "requires_env": [],
+      "requires_network": false
+    },
+    {
+      "id": "meal-planner",
+      "name": "Meal Planner",
+      "description": "Generate weekly meal plans with macros, recipes, and shopping lists",
+      "icon": "takeoutbag.and.cup.and.straw",
+      "category": "nutrition",
+      "roles": ["nutritionist", "trainer"],
+      "requires_env": [],
+      "requires_network": false
+    },
+    {
+      "id": "web-search",
+      "name": "Web Search",
+      "description": "Search the web for current information using Brave Search API",
+      "icon": "magnifyingglass",
+      "category": "tools",
+      "roles": ["assistant"],
+      "requires_env": ["BRAVE_API_KEY"],
+      "requires_network": true
+    }
+  ]
+}
