@@ -29,6 +29,20 @@
       "tagline": "General-purpose helper",
       "icon": "sparkles",
       "suggested_skills": ["web-search", "reminders"]
+    },
+    {
+      "id": "lawyer",
+      "name": "Lawyer",
+      "tagline": "Contract drafting & legal correspondence",
+      "icon": "building.columns",
+      "suggested_skills": ["contract-drafter", "contract-reviewer", "legal-letter-writer"]
+    },
+    {
+      "id": "accountant",
+      "name": "Accountant",
+      "tagline": "Tax prep, expenses & invoicing",
+      "icon": "dollarsign.circle",
+      "suggested_skills": ["tax-prep", "expense-tracker", "invoice-generator"]
     }
   ],
   "skills": [
@@ -149,6 +163,66 @@
       "icon": "bell",
       "category": "tools",
       "roles": ["assistant"],
+      "requires_env": [],
+      "requires_network": false
+    },
+    {
+      "id": "contract-drafter",
+      "name": "Contract Drafter",
+      "description": "Draft contracts, NDAs, service agreements, and partnership agreements",
+      "icon": "doc.text",
+      "category": "legal",
+      "roles": ["lawyer"],
+      "requires_env": [],
+      "requires_network": false
+    },
+    {
+      "id": "contract-reviewer",
+      "name": "Contract Reviewer",
+      "description": "Review and analyze contracts for risks, red flags, and missing clauses",
+      "icon": "doc.text.magnifyingglass",
+      "category": "legal",
+      "roles": ["lawyer"],
+      "requires_env": [],
+      "requires_network": false
+    },
+    {
+      "id": "legal-letter-writer",
+      "name": "Legal Letter Writer",
+      "description": "Write demand letters, cease and desist, termination notices, and dispute letters",
+      "icon": "envelope.open",
+      "category": "legal",
+      "roles": ["lawyer"],
+      "requires_env": [],
+      "requires_network": false
+    },
+    {
+      "id": "tax-prep",
+      "name": "Tax Prep",
+      "description": "Organize tax documents, estimate taxes, categorize deductions, and prep for filing",
+      "icon": "doc.richtext",
+      "category": "finance",
+      "roles": ["accountant"],
+      "requires_env": [],
+      "requires_network": false
+    },
+    {
+      "id": "expense-tracker",
+      "name": "Expense Tracker",
+      "description": "Track, categorize, and analyze expenses with monthly summaries",
+      "icon": "creditcard",
+      "category": "finance",
+      "roles": ["accountant"],
+      "requires_env": [],
+      "requires_network": false
+    },
+    {
+      "id": "invoice-generator",
+      "name": "Invoice Generator",
+      "description": "Create professional invoices, track payments, and manage billing",
+      "icon": "doc.text.below.ecg",
+      "category": "finance",
+      "roles": ["accountant"],
       "requires_env": [],
       "requires_network": false
     },
