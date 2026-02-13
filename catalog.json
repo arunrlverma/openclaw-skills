@@ -245,6 +245,16 @@
       "roles": [],
       "requires_env": [],
       "requires_network": true
+    },
+    {
+      "id": "ios-device",
+      "name": "iOS Device",
+      "description": "Access and control synced iPhone data — contacts, calendar, reminders, photos, location, files, clipboard",
+      "icon": "iphone",
+      "category": "tools",
+      "roles": ["assistant"],
+      "requires_env": [],
+      "requires_network": true
     }
   ]
 }
