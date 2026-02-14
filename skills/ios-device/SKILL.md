@@ -10,6 +10,20 @@ description: >
 
 # iOS Device
 
+## Primary Usage
+For all Apple device tasks, use the sub-agent:
+```bash
+node /root/workspace/skills/ios-device/apple-agent.js "<natural language request>"
+```
+The sub-agent handles multi-step workflows (fetch, create, verify, web search) autonomously using claude-sonnet-4-5 with tool calling. It can search the web for addresses, track IDs, and business info before acting. Just pass the user's natural language request and relay the result.
+
+Examples:
+- `node /root/workspace/skills/ios-device/apple-agent.js "remind me to call the dentist tomorrow at 10am"`
+- `node /root/workspace/skills/ios-device/apple-agent.js "what's on my calendar today"`
+- `node /root/workspace/skills/ios-device/apple-agent.js "find John Smith's phone number and text him 'running late'"`
+
+Only use `device.sh` directly for simple single-step operations where you already know the exact command.
+
 ## Use When
 - User asks about contacts, calendar, reminders, location, photos, files, or clipboard
 - User wants to create/update/delete calendar events, reminders, or contacts
@@ -26,8 +40,8 @@ description: >
 ## Quick Reference
 
 ```bash
-# Fetch data (returns JSON)
-bash /root/workspace/skills/ios-device/device.sh fetch <topic>
+# Fetch data in real-time (returns JSON — device must be online)
+bash /root/workspace/skills/ios-device/device.sh fetch <topic> [filters_json]
 
 # Send a command (returns command ID)
 bash /root/workspace/skills/ios-device/device.sh send <action> '<json_params>'
@@ -38,15 +52,36 @@ bash /root/workspace/skills/ios-device/device.sh result <command-id>
 
 ## Fetch Data — Topics
 
-| Topic | What it returns | Example filter |
+Fetches are real-time — data is read fresh from the device when requested (2-5 second typical, up to 90s with retries). The fetch automatically retries 3 times (~30s each) to handle cases where the phone is waking from background. If still unreachable after ~90s, returns `{"error":"device_offline"}`.
+
+| Topic | What it returns | Native filters |
 |---|---|---|
-| `contacts` | All contacts with names, phones, emails, org | `jq '.contacts[] \| select(.given_name=="John")'` |
-| `calendar` | Events with title, start, end, location, notes | `jq '[.events[] \| select(.start \| startswith("2026-02-13"))]'` |
-| `reminders` | Reminders with title, due date, completed flag | `jq '[.reminders[] \| select(.completed==false)]'` |
-| `location` | Current lat, lng, altitude, timestamp | `jq '{lat: .lat, lng: .lng}'` |
-| `photos` | Photo metadata: id, date, dimensions, favorites | `jq '[.photos[] \| select(.favorite==true)]'` |
-| `files` | iCloud Drive file listing | `jq '.files[]'` |
-| `clipboard` | Current clipboard text | `jq '.text'` |
+| `contacts` | Contacts with names, phones, emails, org, id | `name`, `email`, `phone`, `id` |
+| `calendar` | Events with title, start, end, location, notes, id | `date` (YYYY-MM-DD), `startDate`+`endDate` |
+| `reminders` | Reminders with title, due date, completed flag, id | `completed` (true/false), `list` |
+| `location` | Current lat, lng, altitude, timestamp | — |
+| `photos` | Photo metadata: id, date, dimensions, favorites | `favorite` (true), `startDate`, `endDate`, `limit`, `id` |
+| `files` | iCloud Drive file listing | — |
+| `clipboard` | Current clipboard text | — |
+
+### Filter Examples
+
+```bash
+# Search contacts by name (native iOS search — fast, partial match)
+bash device.sh fetch contacts '{"name":"carlos"}'
+
+# Get today's calendar events only
+bash device.sh fetch calendar '{"date":"2026-02-14"}'
+
+# Get incomplete reminders from "Shopping" list
+bash device.sh fetch reminders '{"completed":"false","list":"Shopping"}'
+
+# Get 50 favorite photos
+bash device.sh fetch photos '{"favorite":"true","limit":"50"}'
+
+# No filters = full fetch
+bash device.sh fetch contacts
+```
 
 ## Send Commands — Actions
 
@@ -126,11 +161,19 @@ Send `app.<action>` to open apps on the device via URL schemes. The device opens
 
 ## Worked Examples
 
-### 1. "Remind me to call the dentist tomorrow at 10am"
+### 1. "Find Carlos in my contacts"
+
+```bash
+# Use native name search for real-time result
+bash /root/workspace/skills/ios-device/device.sh fetch contacts '{"name":"carlos"}'
+# Output: {"count":1,"contacts":[{"id":"ABC-123","given_name":"Carlos",...}],"fetched_at":"2026-02-14T..."}
+```
+
+### 2. "Remind me to call the dentist tomorrow at 10am"
 
 ```bash
 # Create the reminder
-bash /root/workspace/skills/ios-device/device.sh send reminders.create '{"title":"Call the dentist","dueDate":"2026-02-14T10:00:00"}'
+bash /root/workspace/skills/ios-device/device.sh send reminders.create '{"title":"Call the dentist","dueDate":"2026-02-15T10:00:00"}'
 # Output: Command sent: abc12345-...
 
 # Verify it was created
@@ -138,7 +181,15 @@ bash /root/workspace/skills/ios-device/device.sh result abc12345-...
 # Output: {"status":"created","reminder_id":"R123"}
 ```
 
-### 2. "Get me directions to the Golden Gate Bridge"
+### 3. "What's on my calendar today?"
+
+```bash
+# Fetch today's events only
+bash /root/workspace/skills/ios-device/device.sh fetch calendar '{"date":"2026-02-14"}'
+# Output: {"count":3,"events":[...],"fetched_at":"2026-02-14T..."}
+```
+
+### 4. "Get me directions to the Golden Gate Bridge"
 
 ```bash
 # Open Maps with directions
@@ -150,22 +201,12 @@ bash /root/workspace/skills/ios-device/device.sh result def67890-...
 # Output: {"status":"opened","app":"maps.directions","url":"http://maps.apple.com/..."}
 ```
 
-### 3. "What's on my calendar today? Also add a lunch meeting at noon."
-
-```bash
-# Fetch calendar
-bash /root/workspace/skills/ios-device/device.sh fetch calendar | jq '[.events[] | select(.start | startswith("2026-02-13"))]'
-
-# Create the lunch event
-bash /root/workspace/skills/ios-device/device.sh send calendar.create '{"title":"Lunch meeting","startDate":"2026-02-13T12:00:00","endDate":"2026-02-13T13:00:00"}'
-```
-
 ## Response Format
 
 **Fetch** returns topic-specific JSON:
 ```json
-{"contacts": [...], "synced_at": "2026-02-13T..."}
-{"events": [...], "synced_at": "2026-02-13T..."}
+{"contacts": [...], "fetched_at": "2026-02-14T..."}
+{"events": [...], "fetched_at": "2026-02-14T..."}
 ```
 
 **Send** prints a command ID:
@@ -182,8 +223,9 @@ Command sent: <uuid>
 
 ## Tips
 - Always fetch data before modifying (e.g., fetch contacts before updating one)
-- Use `jq` to filter large results — don't dump raw JSON to the user
-- Command results may take a moment — the device must be online
+- Use native filters instead of `jq` when possible — they're faster and return less data
+- The device must be online and the app running (foreground or background) for fetches to work
+- If the device is offline, the fetch retries 3x (~90s total). If it still fails, ask the user to open the app and try again
 - IDs from fetch responses are used for update/delete commands
 - For `app.*` commands: if the app isn't installed, the result will show `opened: false`
 - Date format: ISO 8601 (`2026-02-14T09:00:00`), no timezone suffix (device interprets as local time)
