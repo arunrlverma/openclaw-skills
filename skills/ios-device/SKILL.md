@@ -186,4 +186,5 @@ Command sent: <uuid>
 - Command results may take a moment — the device must be online
 - IDs from fetch responses are used for update/delete commands
 - For `app.*` commands: if the app isn't installed, the result will show `opened: false`
-- Date format: ISO 8601 (`2026-02-14T09:00:00`), no timezone needed (uses device local time)
+- Date format: ISO 8601 (`2026-02-14T09:00:00`), no timezone suffix (device interprets as local time)
+- **IMPORTANT:** The VPS runs in UTC. When the user says relative dates/times like "tomorrow at 11am", you MUST compute the correct date in the **user's local timezone** (check memory for their timezone, or ask). Use `TZ=<timezone> date` to get the current local time. Never use raw UTC `date` output for calendar/reminder dates.
