@@ -43,6 +43,13 @@ wait_for_ack() {
   return 1
 }
 
+# Send a visible push notification to wake the device.
+# Called when the silent push didn't wake the app (iOS throttled it).
+send_nudge() {
+  local CMD_ID="$1"
+  relay_call POST "${RELAY_URL}/buddy/commands/${CMD_ID}/nudge" >/dev/null 2>&1 || true
+}
+
 CMD="${1:-}"
 
 case "$CMD" in
@@ -53,10 +60,15 @@ case "$CMD" in
     BODY=$(echo "$FILTERS" | jq --arg id "$ID" --arg action "fetch.${TOPIC}" '. + {"id": $id, "action": $action}')
     relay_call POST "${RELAY_URL}/buddy/commands" -H "Content-Type: application/json" -d "$BODY" >/dev/null 2>&1
 
-    # Fast ack check — device offline detected in ~15s instead of 120s
+    # Phase 1: Silent push already sent by relay. Wait 15s for ack.
     if ! wait_for_ack "$ID" 6; then
-      echo '{"error":"device_offline","message":"Device did not respond within 15 seconds. Is the app open?"}'
-      exit 1
+      # Phase 2: Silent push was throttled. Send visible push and wait 15s more.
+      send_nudge "$ID"
+      if ! wait_for_ack "$ID" 6; then
+        # Device still not responding — command is queued for when user opens app
+        echo "{\"error\":\"device_queued\",\"message\":\"Device not responding. A notification was sent — command will run when user opens the app.\"}"
+        exit 0
+      fi
     fi
 
     # Device acknowledged — now wait for full result (up to ~120s)
@@ -79,10 +91,15 @@ case "$CMD" in
     BODY=$(echo "$PARAMS" | jq --arg id "$ID" --arg action "$ACTION" '. + {"id": $id, "action": $action}')
     relay_call POST "${RELAY_URL}/buddy/commands" -H "Content-Type: application/json" -d "$BODY" >/dev/null 2>&1
 
-    # Fast ack check
+    # Phase 1: Silent push already sent by relay. Wait 15s for ack.
     if ! wait_for_ack "$ID" 6; then
-      echo "{\"id\":\"${ID}\",\"status\":\"device_offline\",\"message\":\"Device did not acknowledge within 15 seconds\"}"
-      exit 1
+      # Phase 2: Silent push was throttled. Send visible push and wait 15s more.
+      send_nudge "$ID"
+      if ! wait_for_ack "$ID" 6; then
+        # Device still not responding — command is queued for when user opens app
+        echo "{\"id\":\"${ID}\",\"status\":\"queued\",\"message\":\"Device not responding. A notification was sent — command will run when user opens the app.\"}"
+        exit 0
+      fi
     fi
 
     # Device acknowledged — wait for result (up to ~60s)

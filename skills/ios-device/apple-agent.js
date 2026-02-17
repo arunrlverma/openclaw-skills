@@ -183,7 +183,7 @@ function executeTool(name, args) {
       }
       case "wait_seconds": {
         const secs = Math.min(Math.max(parseInt(args.seconds) || 3, 1), 30);
-        execSync(`sleep ${secs}`);
+        execFileSync("sleep", [String(secs)], { timeout: 35000 });
         return JSON.stringify({ waited: secs });
       }
       default:
@@ -277,18 +277,32 @@ send_command returns one of three statuses. Handle each correctly:
    → Action completed successfully. Tell the user what you did. Do NOT re-fetch to verify.
 
 2. PROCESSING ({"status":"processing","id":"..."}):
-   → Device received the command but hasn't finished. Use wait_seconds(10) then get_command_result(id) to check.
+   → Device received the command and IS WORKING ON IT. This is NOT a failure.
+   → Use wait_seconds(10) then get_command_result(id) to check once.
    → If still no result, tell the user: "Your phone received the command — it should complete shortly."
-   → Do NOT say "done" — be honest that you can't confirm completion.
+   → Do NOT say "done" — be honest that you can't confirm completion yet.
 
-3. DEVICE OFFLINE ({"status":"device_offline",...}):
-   → Device didn't respond within 15 seconds. Tell the user: "Your phone appears to be offline or the app isn't running. Please unlock it and open the OpenClaw app, then try again."
-   → Do NOT retry — if the device is offline, retrying wastes time.
+3. QUEUED ({"status":"queued",...} or {"error":"device_queued",...}):
+   → Device didn't respond to silent or visible push. Command is queued and will execute when user opens the app.
+   → Tell the user: "I've queued the command. You should get a notification — tap it or open the OpenClaw app to run it."
+   → Do NOT retry — the command is safely queued and will execute automatically.
+
+4. DEVICE OFFLINE ({"status":"device_offline",...}):
+   → Legacy status. Same as QUEUED — tell the user the command is queued.
+
+CRITICAL — NEVER RETRY MUTATING COMMANDS:
+- For ANY create, update, delete, or app command: send it ONCE and only once.
+- "processing" means the device GOT the command — it WILL execute. Do NOT resend.
+- "no_result" from get_command_result means still working, NOT failed. Do NOT resend.
+- Retrying a create command produces DUPLICATES (e.g., 4 identical contacts).
+- If you can't confirm completion after one check, tell the user it's processing.
+- The ONLY reason to retry is "device_offline" AND the user explicitly asks to try again.
 
 For fetch_device_data:
 - Success returns data directly (contacts, events, etc.)
 - {"error":"device_offline"} → same as above, phone is not reachable
-- {"error":"timeout"} → phone is online but the operation is taking very long (rare)`;
+- {"error":"timeout"} → phone is online but the operation is taking very long (rare)
+- Empty results (count: 0) may mean the data exists but the search didn't match — try broader filters or no filter`;
 
   const messages = [
     { role: "system", content: systemPrompt },
