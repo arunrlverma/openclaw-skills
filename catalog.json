@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated": "2026-02-12T00:00:00Z",
+  "updated": "2026-02-28T00:00:00Z",
   "roles": [
     {
       "id": "trainer",
@@ -22,13 +22,6 @@
       "tagline": "Mental wellness companion",
       "icon": "brain.head.profile",
       "suggested_skills": ["mood-journal", "breathing-exercises", "daily-affirmations"]
-    },
-    {
-      "id": "assistant",
-      "name": "Assistant",
-      "tagline": "General-purpose helper",
-      "icon": "sparkles",
-      "suggested_skills": ["web-search", "reminders"]
     },
     {
       "id": "lawyer",
@@ -89,7 +82,7 @@
     {
       "id": "meal-planner",
       "name": "Meal Planner",
-      "description": "Generate weekly meal plans with macros, recipes, and shopping lists",
+      "description": "Generate weekly meal plans with macros, recipes, and shopping lists. Uses free nutrition APIs for real calorie data.",
       "icon": "takeoutbag.and.cup.and.straw",
       "category": "nutrition",
       "roles": ["nutritionist", "trainer"],
@@ -99,7 +92,7 @@
     {
       "id": "calorie-tracker",
       "name": "Calorie Tracker",
-      "description": "Log food intake and track daily calories and macronutrients",
+      "description": "Log food intake and track daily calories and macronutrients. Uses free nutrition APIs for accurate data.",
       "icon": "flame",
       "category": "nutrition",
       "roles": ["nutritionist"],
@@ -109,17 +102,17 @@
     {
       "id": "recipe-search",
       "name": "Recipe Search",
-      "description": "Search the web for recipes by ingredients, dietary needs, or cuisine",
+      "description": "Search for recipes by ingredients, dietary needs, or cuisine using TheMealDB and web search",
       "icon": "magnifyingglass.circle",
       "category": "nutrition",
       "roles": ["nutritionist"],
-      "requires_env": ["BRAVE_API_KEY"],
+      "requires_env": [],
       "requires_network": true
     },
     {
       "id": "mood-journal",
       "name": "Mood Journal",
-      "description": "Track moods, identify patterns, and guided journaling prompts",
+      "description": "Track moods, identify patterns, and guided journaling with responsive suggestions",
       "icon": "heart.text.square",
       "category": "wellness",
       "roles": ["therapist"],
@@ -129,7 +122,7 @@
     {
       "id": "breathing-exercises",
       "name": "Breathing Exercises",
-      "description": "Guided breathing techniques for stress relief, focus, and sleep",
+      "description": "Guided breathing techniques: box breathing, 4-7-8, physiological sigh, Wim Hof, and more",
       "icon": "wind",
       "category": "wellness",
       "roles": ["therapist"],
@@ -139,30 +132,10 @@
     {
       "id": "daily-affirmations",
       "name": "Daily Affirmations",
-      "description": "Positive affirmations, gratitude exercises, and morning mindset routines",
+      "description": "Positive affirmations, gratitude exercises, and morning mindset routines with fresh quotes",
       "icon": "sun.max",
       "category": "wellness",
       "roles": ["therapist"],
-      "requires_env": [],
-      "requires_network": false
-    },
-    {
-      "id": "web-search",
-      "name": "Web Search",
-      "description": "Search the web for current information using Brave Search API",
-      "icon": "magnifyingglass",
-      "category": "tools",
-      "roles": ["assistant"],
-      "requires_env": ["BRAVE_API_KEY"],
-      "requires_network": true
-    },
-    {
-      "id": "reminders",
-      "name": "Reminders",
-      "description": "Set, manage, and receive reminders and scheduled check-ins",
-      "icon": "bell",
-      "category": "tools",
-      "roles": ["assistant"],
       "requires_env": [],
       "requires_network": false
     },
@@ -209,7 +182,7 @@
     {
       "id": "expense-tracker",
       "name": "Expense Tracker",
-      "description": "Track, categorize, and analyze expenses with monthly summaries",
+      "description": "Track, categorize, and analyze expenses with monthly summaries and currency conversion",
       "icon": "creditcard",
       "category": "finance",
       "roles": ["accountant"],
@@ -219,42 +192,12 @@
     {
       "id": "invoice-generator",
       "name": "Invoice Generator",
-      "description": "Create professional invoices, track payments, and manage billing",
+      "description": "Create professional invoices, track payments, and manage billing with multi-currency support",
       "icon": "doc.text.below.ecg",
       "category": "finance",
       "roles": ["accountant"],
       "requires_env": [],
       "requires_network": false
-    },
-    {
-      "id": "website-builder",
-      "name": "Website Builder",
-      "description": "Build and host websites on this server with Tailwind CSS for beautiful designs",
-      "icon": "globe",
-      "category": "tools",
-      "roles": [],
-      "requires_env": [],
-      "requires_network": false
-    },
-    {
-      "id": "memory",
-      "name": "Memory",
-      "description": "Persistent memory — remembers facts, decisions, and preferences across conversations",
-      "icon": "brain.head.profile",
-      "category": "core",
-      "roles": [],
-      "requires_env": [],
-      "requires_network": true
-    },
-    {
-      "id": "ios-device",
-      "name": "iOS Device",
-      "description": "Access and control synced iPhone data — contacts, calendar, reminders, photos, location, files, clipboard",
-      "icon": "iphone",
-      "category": "tools",
-      "roles": ["assistant"],
-      "requires_env": [],
-      "requires_network": true
     }
   ]
 }

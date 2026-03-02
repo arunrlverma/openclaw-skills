@@ -1,29 +1,24 @@
 #!/bin/bash
 set -euo pipefail
-CONFIG="${HOME}/.openclaw/s8t.json"
-[[ -f "$CONFIG" ]] || { echo "Error: S8t not configured (no memory storage)" >&2; exit 1; }
-API_URL=$(jq -r '.apiUrl' "$CONFIG")
-AGENT_TOKEN=$(jq -r '.agentToken' "$CONFIG")
-MEMORY_PATH="memory/memory.json"
+MEMORY_FILE="${HOME}/.openclaw/storage/memory/memory.json"
 CMD="${1:-}"
+
+# Ensure directory exists
+mkdir -p "$(dirname "$MEMORY_FILE")"
 
 # Helper: read current memory
 read_memory() {
-  local raw
-  raw=$(curl -sf "${API_URL}/storage/${AGENT_TOKEN}/files/${MEMORY_PATH}" 2>/dev/null || echo '{}')
-  # If it's a "not found" JSON response, return empty
-  if echo "$raw" | jq -e '.error' &>/dev/null 2>&1; then
-    echo '{}'
+  if [[ -f "$MEMORY_FILE" ]]; then
+    cat "$MEMORY_FILE"
   else
-    echo "$raw"
+    echo '{}'
   fi
 }
 
 # Helper: write memory
 write_memory() {
   local data="$1"
-  echo "$data" | curl -sf -X PUT "${API_URL}/storage/${AGENT_TOKEN}/files/${MEMORY_PATH}" \
-    -H "Content-Type: application/json" -d @- > /dev/null
+  echo "$data" > "$MEMORY_FILE"
 }
 
 case "$CMD" in
