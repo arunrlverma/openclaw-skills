@@ -284,7 +284,7 @@ send_command returns one of three statuses. Handle each correctly:
 
 3. QUEUED ({"status":"queued",...} or {"error":"device_queued",...}):
    → Device didn't respond to silent or visible push. Command is queued and will execute when user opens the app.
-   → Tell the user: "I've queued the command. You should get a notification — tap it or open the OpenClaw app to run it."
+   → Tell the user: "I've queued the command. You should get a notification — tap it or open the S8T app to run it."
    → Do NOT retry — the command is safely queued and will execute automatically.
 
 4. DEVICE OFFLINE ({"status":"device_offline",...}):
