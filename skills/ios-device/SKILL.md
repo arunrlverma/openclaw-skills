@@ -11,16 +11,18 @@ description: >
 # iOS Device
 
 ## Primary Usage
-For all Apple device tasks, use the sub-agent:
+For all Apple device tasks, use the sub-agent with the user's timezone:
 ```bash
-node /root/workspace/skills/ios-device/apple-agent.js "<natural language request>"
+TZ=America/Los_Angeles node /root/workspace/skills/ios-device/apple-agent.js "<natural language request>"
 ```
+**CRITICAL:** Always set `TZ` to the user's timezone (from your memory/config). The VPS runs in UTC — without `TZ`, all relative times ("in 1 hour", "tomorrow at 3pm") will be wrong. Common values: `America/Los_Angeles`, `America/New_York`, `America/Chicago`, `Europe/London`.
+
 The sub-agent handles multi-step workflows (fetch, create, verify, web search) autonomously using claude-sonnet-4-5 with tool calling. It can search the web for addresses, track IDs, and business info before acting. Just pass the user's natural language request and relay the result.
 
 Examples:
-- `node /root/workspace/skills/ios-device/apple-agent.js "remind me to call the dentist tomorrow at 10am"`
-- `node /root/workspace/skills/ios-device/apple-agent.js "what's on my calendar today"`
-- `node /root/workspace/skills/ios-device/apple-agent.js "find John Smith's phone number and text him 'running late'"`
+- `TZ=America/Los_Angeles node /root/workspace/skills/ios-device/apple-agent.js "remind me to call the dentist tomorrow at 10am"`
+- `TZ=America/New_York node /root/workspace/skills/ios-device/apple-agent.js "what's on my calendar today"`
+- `TZ=America/Los_Angeles node /root/workspace/skills/ios-device/apple-agent.js "find John Smith's phone number and text him 'running late'"`
 
 Only use `device.sh` directly for simple single-step operations where you already know the exact command.
 
@@ -229,4 +231,4 @@ Command sent: <uuid>
 - IDs from fetch responses are used for update/delete commands
 - For `app.*` commands: if the app isn't installed, the result will show `opened: false`
 - Date format: ISO 8601 (`2026-02-14T09:00:00`), no timezone suffix (device interprets as local time)
-- **IMPORTANT:** The VPS runs in UTC. When the user says relative dates/times like "tomorrow at 11am", you MUST compute the correct date in the **user's local timezone** (check memory for their timezone, or ask). Use `TZ=<timezone> date` to get the current local time. Never use raw UTC `date` output for calendar/reminder dates.
+- **IMPORTANT:** The VPS runs in UTC. Always set `TZ=<timezone>` when invoking apple-agent.js or device.sh so dates are computed in the user's local time. Never use raw UTC `date` output for calendar/reminder dates.

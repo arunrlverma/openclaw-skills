@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 // Apple Device Sub-Agent
-// Usage: node apple-agent.js "user's natural language request"
+// Usage: TZ=America/Los_Angeles node apple-agent.js "user's natural language request"
 // Autonomously handles Apple device workflows via claude-sonnet-4-5 + tool calling.
 // Reads buddy token and Brave API key from /root/.openclaw/openclaw.json
 
@@ -27,7 +27,7 @@ function getConfig() {
   }
 }
 
-// Get current time for the system prompt
+// Get current time for the system prompt (honors TZ env var)
 function getCurrentTime() {
   try {
     return execSync("date '+%Y-%m-%dT%H:%M:%S %Z (%A)'", { encoding: "utf8" }).trim();
